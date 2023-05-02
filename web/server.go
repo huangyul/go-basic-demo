@@ -22,6 +22,13 @@ type Server interface {
 }
 
 type HTTPServer struct {
+	*router
+}
+
+func NewHTTPServer() *HTTPServer {
+	return &HTTPServer{
+		router: newRouter(),
+	}
 }
 
 // ServeHTTP 处理请求的入口
