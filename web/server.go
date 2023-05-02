@@ -34,7 +34,7 @@ func (h *HTTPServer) ServeHTTP(writer http.ResponseWriter, request *http.Request
 	h.server(ctx)
 }
 
-func (h *HTTPServer) server(ctx Context) {
+func (h *HTTPServer) server(ctx *Context) {
 
 }
 
