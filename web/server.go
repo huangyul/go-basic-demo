@@ -26,8 +26,16 @@ type HTTPServer struct {
 
 // ServeHTTP 处理请求的入口
 func (h *HTTPServer) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	ctx := &Context{
+		Req: request,
+		Res: writer,
+	}
+	// 接下来就是查找路由，并且执行业务逻辑
+	h.server(ctx)
+}
+
+func (h *HTTPServer) server(ctx Context) {
+
 }
 
 func (h *HTTPServer) Start(addr string) error {
