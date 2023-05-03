@@ -15,7 +15,7 @@ type Server interface {
 	Start(addr string) error
 
 	// 增加路由注册
-	addRoute(method string, path string, handleFunc HandleFunc)
+	//addRoute(method string, path string, handleFunc HandleFunc)
 }
 
 type HTTPServer struct {
@@ -50,11 +50,11 @@ func (h *HTTPServer) Start(addr string) error {
 //func (h *HTTPServer) addRoute(method string, path string, handleFunc HandleFunc) {
 //}
 
-func (h *HTTPServer) Get(path string, handleFunc HandleFunc) {
-	h.router.addRoute(http.MethodGet, path, handleFunc)
-}
-
-func (h *HTTPServer) Post(path string, handleFunc HandleFunc) {
-	h.addRoute(http.MethodPost, path, handleFunc)
-
-}
+//func (h *HTTPServer) Get(path string, handleFunc HandleFunc) {
+//	h.router.addRoute(http.MethodGet, path, handleFunc)
+//}
+//
+//func (h *HTTPServer) Post(path string, handleFunc HandleFunc) {
+//	h.addRoute(http.MethodPost, path, handleFunc)
+//
+//}
