@@ -9,6 +9,16 @@ type router struct {
 }
 
 func (r *router) AddRoute(method string, path string, handleFunc HandleFunc) {
+	if path == "" {
+		panic("web: the path cannot be empty")
+	}
+	if path[0] != '/' {
+		panic("web: the path must start with '/'")
+	}
+	if path != "/" && path[len(path)-1] == '/' {
+		panic("web: the path cannot end in ''/")
+	}
+
 	// 首先找到树来
 	root, ok := r.trees[method]
 
@@ -28,6 +38,9 @@ func (r *router) AddRoute(method string, path string, handleFunc HandleFunc) {
 	path = path[1:]
 	segs := strings.Split(path, "/")
 	for _, seg := range segs {
+		if seg == "" {
+			panic("web: path cannot have '//'")
+		}
 		children := root.childOrCreate(seg)
 		root = children
 	}

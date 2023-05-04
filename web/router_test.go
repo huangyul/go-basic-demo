@@ -99,6 +99,21 @@ func TestRouter_AddRoute(t *testing.T) {
 
 	msg, ok := wantRouter.equal(r)
 	assert.True(t, ok, msg)
+
+	// test empty path
+	r = newRouter()
+	assert.Panicsf(t, func() {
+		r.AddRoute(http.MethodGet, "", mockHandler)
+	}, "web: the path cannot be empty")
+	assert.Panicsf(t, func() {
+		r.AddRoute(http.MethodGet, "sss", mockHandler)
+	}, "web: the path must start with '/'")
+	assert.Panicsf(t, func() {
+		r.AddRoute(http.MethodGet, "/a/b/c/", mockHandler)
+	}, "web: the path cannot end in ''/")
+	assert.Panicsf(t, func() {
+		r.AddRoute(http.MethodGet, "/a//b", mockHandler)
+	}, "web: path cannot have '//'")
 }
 
 func (r *router) equal(y *router) (string, bool) {
