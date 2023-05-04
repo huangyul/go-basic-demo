@@ -13,9 +13,31 @@ func TestRouter_AddRoute(t *testing.T) {
 		method string
 		path   string
 	}{
+		// add the root node case test
+		{
+			method: http.MethodGet,
+			path:   "/",
+		},
+		{
+			method: http.MethodGet,
+			path:   "/user",
+		},
 		{
 			method: http.MethodGet,
 			path:   "/user/home",
+		},
+		{
+			method: http.MethodGet,
+			path:   "/order/detail",
+		},
+		// post
+		{
+			method: http.MethodPost,
+			path:   "/order/create",
+		},
+		{
+			method: http.MethodPost,
+			path:   "/login",
 		},
 	}
 
@@ -30,16 +52,45 @@ func TestRouter_AddRoute(t *testing.T) {
 	wantRouter := &router{
 		map[string]*node{
 			http.MethodGet: &node{
-				path: "/",
+				path:    "/",
+				handler: mockHandler,
 				children: map[string]*node{
 					"user": &node{
-						path: "user",
+						path:    "user",
+						handler: mockHandler,
 						children: map[string]*node{
 							"home": &node{
 								path:    "home",
 								handler: mockHandler,
 							},
 						},
+					},
+					"order": &node{
+						path: "order",
+						children: map[string]*node{
+							"detail": &node{
+								path:    "detail",
+								handler: mockHandler,
+							},
+						},
+					},
+				},
+			},
+			http.MethodPost: &node{
+				path: "/",
+				children: map[string]*node{
+					"order": {
+						path: "order",
+						children: map[string]*node{
+							"create": {
+								path:    "create",
+								handler: mockHandler,
+							},
+						},
+					},
+					"login": {
+						path:    "login",
+						handler: mockHandler,
 					},
 				},
 			},

@@ -19,6 +19,12 @@ func (r *router) AddRoute(method string, path string, handleFunc HandleFunc) {
 		}
 		r.trees[method] = root
 	}
+	// root node special handling
+	if path == "/" {
+		root.handler = handleFunc
+		return
+	}
+
 	path = path[1:]
 	segs := strings.Split(path, "/")
 	for _, seg := range segs {
