@@ -1,6 +1,9 @@
 package web
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type router struct {
 	// 每一种method都有一棵树
@@ -31,18 +34,23 @@ func (r *router) AddRoute(method string, path string, handleFunc HandleFunc) {
 	}
 	// root node special handling
 	if path == "/" {
+		if root.handler != nil {
+			panic("duplicate route: /")
+		}
 		root.handler = handleFunc
 		return
 	}
 
-	path = path[1:]
-	segs := strings.Split(path, "/")
+	segs := strings.Split(path[1:], "/")
 	for _, seg := range segs {
 		if seg == "" {
 			panic("web: path cannot have '//'")
 		}
 		children := root.childOrCreate(seg)
 		root = children
+	}
+	if root.handler != nil {
+		panic(fmt.Sprintf("duplicate route: %s", path))
 	}
 	root.handler = handleFunc
 

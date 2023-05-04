@@ -114,6 +114,17 @@ func TestRouter_AddRoute(t *testing.T) {
 	assert.Panicsf(t, func() {
 		r.AddRoute(http.MethodGet, "/a//b", mockHandler)
 	}, "web: path cannot have '//'")
+
+	// duplicate routes
+	r = newRouter()
+	r.AddRoute(http.MethodGet, "/", mockHandler)
+	assert.Panicsf(t, func() {
+		r.AddRoute(http.MethodGet, "/", mockHandler)
+	}, "duplicate route: /")
+	r.AddRoute(http.MethodGet, "/a", mockHandler)
+	assert.Panicsf(t, func() {
+		r.AddRoute(http.MethodGet, "/a", mockHandler)
+	}, "duplicate route: a")
 }
 
 func (r *router) equal(y *router) (string, bool) {
